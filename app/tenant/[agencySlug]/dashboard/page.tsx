@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { loadDashboardContext } from "@/lib/dashboardContext";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import WeeklyChart, { type DayCount } from "@/components/WeeklyChart";
 
 export const dynamic = "force-dynamic";
 
 type Params = { agencySlug: string };
+
+const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default async function DashboardOverview({
   params,
@@ -13,13 +16,9 @@ export default async function DashboardOverview({
 }) {
   const ctx = await loadDashboardContext(params.agencySlug);
 
-  // Aggregate stats. We do this with the admin client because the user
-  // session is auth-confirmed and the layout has already verified the
-  // user belongs to this agency. Doing aggregates via RLS-scoped reads
-  // would also work but requires more roundtrips.
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  const [{ count: totalClients }, { count: totalReviews }, { count: weekReviews }, recent] =
+  const [{ count: totalClients }, { count: totalReviews }, { count: weekReviews }, recent, trend] =
     await Promise.all([
       supabaseAdmin
         .from("clients")
@@ -48,6 +47,11 @@ export default async function DashboardOverview({
         .eq("clients.agency_id", ctx.agencyId)
         .order("created_at", { ascending: false })
         .limit(5),
+      supabaseAdmin
+        .from("reviews")
+        .select("created_at, star_rating, clients!inner(agency_id)")
+        .eq("clients.agency_id", ctx.agencyId)
+        .gte("created_at", sevenDaysAgo),
     ]);
 
   type RecentReview = {
@@ -60,6 +64,28 @@ export default async function DashboardOverview({
   };
 
   const recentRows = (recent.data ?? []) as unknown as RecentReview[];
+
+  // Build the 7-day buckets
+  const trendRows = (trend.data ?? []) as { created_at: string; star_rating: number | null }[];
+
+  const days: DayCount[] = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000);
+    const dateStr = d.toISOString().slice(0, 10);
+    const label = i === 6 ? "Today" : DAY_LABELS[d.getDay()];
+    return { date: dateStr, label, count: 0 };
+  });
+
+  for (const row of trendRows) {
+    const dateStr = row.created_at.slice(0, 10);
+    const bucket = days.find((d) => d.date === dateStr);
+    if (bucket) bucket.count += 1;
+  }
+
+  const ratedRows = trendRows.filter((r) => r.star_rating != null);
+  const avgStarRating =
+    ratedRows.length > 0
+      ? ratedRows.reduce((sum, r) => sum + (r.star_rating as number), 0) / ratedRows.length
+      : null;
 
   return (
     <div className="space-y-8">
@@ -96,6 +122,10 @@ export default async function DashboardOverview({
           }
         />
       </div>
+
+      <section className="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm">
+        <WeeklyChart days={days} avgStarRating={avgStarRating} />
+      </section>
 
       <section className="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm">
         <div className="flex items-end justify-between">
