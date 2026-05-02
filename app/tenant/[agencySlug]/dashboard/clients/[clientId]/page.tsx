@@ -51,7 +51,7 @@ export default async function ClientDetailPage({
       supabaseAdmin
         .from("reviews")
         .select(
-          "review_id, raw_transcript, cleaned_review, char_count, created_at"
+          "review_id, raw_transcript, cleaned_review, char_count, star_rating, created_at"
         )
         .eq("client_id", client.client_id as string)
         .order("created_at", { ascending: false })
@@ -145,6 +145,19 @@ export default async function ClientDetailPage({
                   <span>{new Date(r.created_at as string).toLocaleString()}</span>
                   <span>{r.char_count as number} chars</span>
                 </div>
+                {(r.star_rating as number | null) != null && (
+                  <div className="mt-1 flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <span
+                        key={s}
+                        className="text-sm leading-none"
+                        style={{ color: s <= (r.star_rating as number) ? "#f59e0b" : "#d6d3d1" }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <p className="mt-1 text-stone-800 leading-relaxed">
                   {r.cleaned_review as string}
                 </p>
