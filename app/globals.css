@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+}
+
+/* Prevent iOS Safari from zooming on input focus (font-size must be >= 16px) */
+textarea, input {
+  font-size: 16px;
+}
+
+/* Kill the tap highlight flash on the hold-to-speak button */
+button {
+  -webkit-tap-highlight-color: transparent;
+}
