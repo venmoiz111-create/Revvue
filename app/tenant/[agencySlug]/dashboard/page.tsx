@@ -43,7 +43,7 @@ export default async function DashboardOverview({
       supabaseAdmin
         .from("reviews")
         .select(
-          "review_id, cleaned_review, char_count, created_at, clients!inner(agency_id, business_name, slug)"
+          "review_id, cleaned_review, char_count, star_rating, created_at, clients!inner(agency_id, business_name, slug)"
         )
         .eq("clients.agency_id", ctx.agencyId)
         .order("created_at", { ascending: false })
@@ -54,6 +54,7 @@ export default async function DashboardOverview({
     review_id: string;
     cleaned_review: string;
     char_count: number;
+    star_rating: number | null;
     created_at: string;
     clients: { agency_id: string; business_name: string; slug: string } | null;
   };
@@ -120,6 +121,19 @@ export default async function DashboardOverview({
                   <span>{r.clients?.business_name ?? "—"}</span>
                   <span>{new Date(r.created_at).toLocaleString()}</span>
                 </div>
+                {r.star_rating != null && (
+                  <div className="mt-1 flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <span
+                        key={s}
+                        className="text-sm leading-none"
+                        style={{ color: s <= r.star_rating! ? "#f59e0b" : "#d6d3d1" }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <p className="mt-1 text-stone-800 leading-relaxed">
                   {r.cleaned_review}
                 </p>
