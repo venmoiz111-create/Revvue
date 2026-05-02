@@ -44,6 +44,7 @@ type GenerateBody = {
   transcript?: unknown;
   businessName?: unknown;
   clientId?: unknown;
+  starRating?: unknown;
 };
 
 export async function POST(req: Request) {
@@ -62,6 +63,12 @@ export async function POST(req: Request) {
       ? body.businessName.trim()
       : "the restaurant";
   const clientId = typeof body.clientId === "string" ? body.clientId : null;
+  const starRating =
+    typeof body.starRating === "number" &&
+    body.starRating >= 1 &&
+    body.starRating <= 5
+      ? Math.round(body.starRating)
+      : null;
 
   if (!clientId) {
     return NextResponse.json({ error: "Missing clientId" }, { status: 400 });
@@ -76,6 +83,7 @@ export async function POST(req: Request) {
       clientId,
       rawTranscript: transcript,
       cleanedReview: transcript,
+      starRating,
       userAgent: req.headers.get("user-agent"),
       processingMs: Date.now() - startedAt,
     });
@@ -130,6 +138,7 @@ export async function POST(req: Request) {
     clientId,
     rawTranscript: transcript,
     cleanedReview: cleaned,
+    starRating,
     userAgent: req.headers.get("user-agent"),
     processingMs: Date.now() - startedAt,
   });
@@ -141,6 +150,7 @@ async function logReview(params: {
   clientId: string;
   rawTranscript: string;
   cleanedReview: string;
+  starRating: number | null;
   userAgent: string | null;
   processingMs: number;
 }): Promise<string | null> {
@@ -152,6 +162,7 @@ async function logReview(params: {
         raw_transcript: params.rawTranscript,
         cleaned_review: params.cleanedReview,
         char_count: params.cleanedReview.length,
+        star_rating: params.starRating,
         user_agent: params.userAgent,
         processing_ms: params.processingMs,
       })
