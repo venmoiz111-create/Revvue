@@ -30,12 +30,12 @@ export default function Home() {
             straight to the paste screen — in under 30 seconds.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="mailto:ven@revvue.live?subject=Revvue%20—%20Get%20started"
+            <Link
+              href="/demo"
               className="inline-flex items-center justify-center rounded-full bg-stone-900 text-stone-50 font-medium px-8 py-4 text-base shadow-sm hover:bg-stone-800 transition-colors"
             >
-              Get Revvue for your restaurant
-            </a>
+              Try it live — no signup →
+            </Link>
             <Link
               href="/agencies"
               className="inline-flex items-center justify-center rounded-full border border-stone-300 text-stone-900 font-medium px-8 py-4 text-base hover:bg-stone-100 transition-colors"
