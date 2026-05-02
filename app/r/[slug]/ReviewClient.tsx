@@ -35,6 +35,10 @@ type UiState =
   | "posted"
   | "error";
 
+// Star rating helpers
+const STAR_LABELS = ["Terrible", "Poor", "OK", "Good", "Amazing"];
+
+
 // Minimum characters we consider a real review attempt. Below this we assume
 // the customer tapped by accident or the mic didn't catch anything.
 const MIN_TRANSCRIPT_CHARS = 5;
@@ -47,6 +51,8 @@ export default function ReviewClient({
 }: Props) {
   const { agencyName, logoUrl, primaryColor, fontFamily } = branding;
   const [state, setState] = useState<UiState>("idle");
+  const [starRating, setStarRating] = useState<number | null>(null);
+  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [interim, setInterim] = useState<string>("");
   const [cleanedReview, setCleanedReview] = useState<string>("");
@@ -175,6 +181,7 @@ export default function ReviewClient({
           transcript,
           businessName,
           clientId,
+          starRating,
         }),
       });
 
@@ -280,6 +287,8 @@ export default function ReviewClient({
     setCleanedReview("");
     setEditedReview("");
     setIsEditing(false);
+    setStarRating(null);
+    setHoveredStar(null);
     setState("idle");
   };
 
@@ -323,11 +332,75 @@ export default function ReviewClient({
           {businessName}
         </h1>
 
-        {state === "idle" && (
+        {state === "idle" && starRating === null && (
           <>
-            <p className="mt-4 text-stone-600 leading-relaxed">
-              Tell us how your meal was. Hold the button and speak for about
-              10 seconds.
+            <p className="mt-5 text-stone-600 leading-relaxed">
+              How was your experience?
+            </p>
+            <div className="mt-6 flex gap-3 justify-center">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  aria-label={`${star} star${star > 1 ? "s" : ""} — ${STAR_LABELS[star - 1]}`}
+                  onMouseEnter={() => setHoveredStar(star)}
+                  onMouseLeave={() => setHoveredStar(null)}
+                  onClick={() => setStarRating(star)}
+                  className="text-5xl leading-none transition-transform active:scale-90 select-none"
+                >
+                  <span
+                    style={{
+                      color:
+                        (hoveredStar ?? 0) >= star
+                          ? "#f59e0b"
+                          : "#d6d3d1",
+                      filter:
+                        (hoveredStar ?? 0) >= star
+                          ? "drop-shadow(0 0 4px rgba(245,158,11,0.5))"
+                          : "none",
+                      transition: "color 0.1s, filter 0.1s",
+                    }}
+                  >
+                    ★
+                  </span>
+                </button>
+              ))}
+            </div>
+            {hoveredStar !== null && (
+              <p className="mt-3 text-sm text-stone-500 h-5">
+                {STAR_LABELS[hoveredStar - 1]}
+              </p>
+            )}
+            {hoveredStar === null && <div className="mt-3 h-5" />}
+          </>
+        )}
+
+        {state === "idle" && starRating !== null && (
+          <>
+            <div className="mt-5 flex gap-1 justify-center">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className="text-3xl leading-none"
+                  style={{ color: star <= starRating ? "#f59e0b" : "#d6d3d1" }}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <p className="mt-1 text-sm text-stone-500">
+              {STAR_LABELS[starRating - 1]} —{" "}
+              <button
+                type="button"
+                className="underline underline-offset-4 hover:text-stone-800"
+                onClick={() => setStarRating(null)}
+              >
+                change
+              </button>
+            </p>
+
+            <p className="mt-5 text-stone-600 leading-relaxed">
+              Now tell us more. Hold the button and speak for about 10 seconds.
             </p>
 
             <HoldButton
@@ -372,6 +445,19 @@ export default function ReviewClient({
 
         {state === "ready" && (
           <div className="mt-6 w-full">
+            {starRating !== null && (
+              <div className="flex gap-0.5 justify-center mb-3">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <span
+                    key={s}
+                    className="text-2xl leading-none"
+                    style={{ color: s <= starRating ? "#f59e0b" : "#d6d3d1" }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            )}
             <div className="rounded-2xl bg-white border border-stone-200 shadow-sm p-5 text-left">
               {isEditing ? (
                 <textarea
