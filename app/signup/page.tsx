@@ -10,18 +10,15 @@ export const metadata: Metadata = {
 
 export default function SignupPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 text-stone-900 px-6 py-10">
+    <main className="min-h-screen bg-black text-white px-6 py-10">
       <div className="max-w-xl mx-auto">
         <div className="mb-8 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-serif text-xl tracking-tight text-stone-900"
-          >
+          <Link href="/" className="text-xl font-black tracking-tight text-white">
             Revvue
           </Link>
           <Link
             href="/agencies"
-            className="text-sm text-stone-600 hover:text-stone-900"
+            className="text-sm text-zinc-500 hover:text-white transition-colors"
           >
             Back to overview
           </Link>
