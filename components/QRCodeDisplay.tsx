@@ -10,15 +10,11 @@ type Props = {
   fgColor?: string;
 };
 
-// Renders a QR code on canvas + provides PNG download. We render via
-// qrcode.react (canvas) so we can read pixel data straight off the DOM
-// without an extra round-trip through the API. The /api/clients/[id]/qr
-// endpoint exists for printing/emailing programmatically.
 export default function QRCodeDisplay({
   url,
   businessName,
-  size = 256,
-  fgColor = "#1c1917",
+  size = 240,
+  fgColor = "#000000",
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
@@ -49,34 +45,36 @@ export default function QRCodeDisplay({
     <div className="flex flex-col items-center">
       <div
         ref={ref}
-        className="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm"
+        className="bg-white rounded-2xl p-5 inline-block"
       >
         <QRCodeCanvas
           value={url}
           size={size}
           level="H"
-          includeMargin
+          includeMargin={false}
           fgColor={fgColor}
           bgColor="#ffffff"
         />
       </div>
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+
+      <div className="mt-5 flex flex-wrap items-center justify-center gap-2 w-full">
         <button
           type="button"
           onClick={downloadPng}
-          className="rounded-full bg-stone-900 text-stone-50 text-sm px-4 py-2 hover:bg-stone-800 transition-colors"
+          className="rounded-full bg-green-500 text-black text-sm font-bold px-5 py-2 hover:bg-green-400 transition-colors"
         >
           Download PNG
         </button>
         <button
           type="button"
           onClick={copyUrl}
-          className="rounded-full border border-stone-300 text-stone-800 text-sm px-4 py-2 hover:bg-stone-100 transition-colors"
+          className="rounded-full border border-zinc-700 text-zinc-400 text-sm px-5 py-2 hover:bg-zinc-900 hover:text-white transition-colors"
         >
           {copied ? "Copied!" : "Copy URL"}
         </button>
       </div>
-      <p className="mt-3 text-xs text-stone-500 break-all text-center max-w-xs">
+
+      <p className="mt-3 text-xs text-zinc-700 break-all text-center max-w-xs font-mono">
         {url}
       </p>
     </div>
