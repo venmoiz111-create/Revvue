@@ -258,10 +258,10 @@ function Footer() {
       <p className="mt-2">
         Questions?{" "}
         <a
-          href="mailto:ven@revvue.live"
+          href="mailto:team.revvue@gmail.com"
           className="text-zinc-400 underline underline-offset-4 hover:text-white transition-colors"
         >
-          ven@revvue.live
+          team.revvue@gmail.com
         </a>
       </p>
     </footer>
