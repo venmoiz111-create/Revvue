@@ -43,7 +43,20 @@ export default function Home() {
               Get started free →
             </Link>
           </div>
-          <p className="mt-4 text-xs text-stone-500">
+          <p className="mt-5">
+            <Link
+              href="/video"
+              className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-800 transition-colors group"
+            >
+              <span className="w-7 h-7 rounded-full border border-stone-300 inline-flex items-center justify-center group-hover:border-stone-500 transition-colors">
+                <svg className="w-3 h-3 translate-x-px" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M6.5 3.5L12 8l-5.5 4.5V3.5z" />
+                </svg>
+              </span>
+              Watch the 45-second demo video
+            </Link>
+          </p>
+          <p className="mt-3 text-xs text-stone-500">
             Works for any local business. No credit card required.
           </p>
         </div>
