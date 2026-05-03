@@ -1,20 +1,14 @@
 import { loadDashboardContext } from "@/lib/dashboardContext";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { getPlan } from "@/lib/plans";
 import SettingsForm from "./SettingsForm";
 
 export const dynamic = "force-dynamic";
 
 type Params = { agencySlug: string };
 
-const FOUNDER_EMAIL =
-  process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "ven@revvue.live";
+const FOUNDER_EMAIL = process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "ven@revvue.live";
 
-export default async function SettingsPage({
-  params,
-}: {
-  params: Params;
-}) {
+export default async function SettingsPage({ params }: { params: Params }) {
   const ctx = await loadDashboardContext(params.agencySlug);
 
   const { data: agency } = await supabaseAdmin
@@ -23,15 +17,11 @@ export default async function SettingsPage({
     .eq("agency_id", ctx.agencyId)
     .single();
 
-  const planMeta = getPlan(agency?.plan as string | null);
-
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="font-serif text-3xl tracking-tight text-stone-900">
-          Settings
-        </h1>
-        <p className="mt-2 text-stone-600">
+        <h1 className="text-2xl font-black tracking-tight text-white">Settings</h1>
+        <p className="mt-1 text-sm text-zinc-500">
           Update how we reach you. Plan changes happen via email.
         </p>
       </div>
@@ -39,75 +29,53 @@ export default async function SettingsPage({
       <SettingsForm
         initial={{
           contact_name: (agency?.contact_name as string | null) ?? "",
-          contact_email:
-            (agency?.contact_email as string | null) ?? ctx.email,
+          contact_email: (agency?.contact_email as string | null) ?? ctx.email,
           contact_phone: (agency?.contact_phone as string | null) ?? "",
         }}
       />
 
-      <section className="bg-white border border-stone-200 rounded-2xl shadow-sm p-6">
-        <h2 className="font-serif text-xl tracking-tight text-stone-900">
-          Plan
-        </h2>
-        <dl className="mt-4 space-y-2 text-sm text-stone-700">
+      <section className="border border-zinc-800 bg-zinc-950 rounded-2xl p-6">
+        <h2 className="font-bold text-white text-lg">Plan</h2>
+        <dl className="mt-4 space-y-2 text-sm divide-y divide-zinc-800/50">
           <Row label="Current plan">
-            <span className="capitalize">{agency?.plan ?? "trial"}</span>
-            {planMeta ? (
-              <span className="text-stone-500">
-                {" "}
-                — {planMeta.priceLabel}/mo
-              </span>
-            ) : null}
+            <span className="capitalize text-white font-semibold">{agency?.plan ?? "trial"}</span>
           </Row>
           <Row label="Restaurant limit">
-            {ctx.maxClients >= 99999 ? "Unlimited" : ctx.maxClients}
+            <span className="text-white">{ctx.maxClients >= 99999 ? "Unlimited" : ctx.maxClients}</span>
           </Row>
-          {agency?.trial_ends_at ? (
+          {agency?.trial_ends_at && (
             <Row label="Trial ends">
-              {new Date(agency.trial_ends_at as string).toLocaleString()}
+              <span className="text-white">{new Date(agency.trial_ends_at as string).toLocaleDateString()}</span>
             </Row>
-          ) : null}
-          {agency?.paid_until ? (
+          )}
+          {agency?.paid_until && (
             <Row label="Paid until">
-              {new Date(agency.paid_until as string).toLocaleString()}
+              <span className="text-white">{new Date(agency.paid_until as string).toLocaleDateString()}</span>
             </Row>
-          ) : null}
+          )}
         </dl>
         <a
-          href={`mailto:${FOUNDER_EMAIL}?subject=${encodeURIComponent(
-            `Change Revvue plan for ${ctx.agencyName}`
-          )}`}
-          className="mt-5 inline-flex items-center justify-center rounded-full bg-stone-900 text-stone-50 font-medium px-5 py-2.5 text-sm hover:bg-stone-800 transition-colors"
+          href={`mailto:${FOUNDER_EMAIL}?subject=${encodeURIComponent(`Change Revvue plan for ${ctx.agencyName}`)}`}
+          className="mt-5 inline-flex items-center justify-center rounded-full bg-green-500 text-black font-bold px-5 py-2.5 text-sm hover:bg-green-400 transition-colors"
         >
-          Email Ven to change plan
+          Email to change plan
         </a>
-        <p className="mt-3 text-xs text-stone-500">
-          Billing is currently handled by hand — PayPal, Interac, or Stripe
-          invoice. Reply to your welcome email or write to{" "}
-          <a
-            href={`mailto:${FOUNDER_EMAIL}`}
-            className="underline underline-offset-4"
-          >
+        <p className="mt-3 text-xs text-zinc-600">
+          Billing is handled by email. Write to{" "}
+          <a href={`mailto:${FOUNDER_EMAIL}`} className="text-zinc-400 underline underline-offset-4 hover:text-white">
             {FOUNDER_EMAIL}
           </a>
-          .
         </p>
       </section>
     </div>
   );
 }
 
-function Row({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-start justify-between gap-3">
-      <dt className="text-stone-500">{label}</dt>
-      <dd className="text-stone-800">{children}</dd>
+    <div className="flex items-center justify-between gap-3 py-2">
+      <dt className="text-zinc-500">{label}</dt>
+      <dd>{children}</dd>
     </div>
   );
 }
