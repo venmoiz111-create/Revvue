@@ -298,7 +298,7 @@ async function sendWelcomeEmail({
   // to install `resend` until we actually want richer email features.
   const from = process.env.EMAIL_FROM || "Revvue <noreply@revvue.live>";
   const founderEmail =
-    process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "ven@revvue.live";
+    process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "team.revvue@gmail.com";
 
   const subject = `Welcome to Revvue, ${agencyName}`;
   const html = `
