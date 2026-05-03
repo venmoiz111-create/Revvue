@@ -95,19 +95,19 @@ export default async function DashboardOverview({
             Welcome back, {ctx.agencyName}
           </h1>
           <p className="mt-2 text-stone-600">
-            Here&apos;s how your restaurants are doing this week.
+            Here&apos;s how your businesses are doing this week.
           </p>
         </div>
         <Link
           href="/dashboard/clients/new"
           className="rounded-full bg-stone-900 text-stone-50 font-medium px-5 py-2.5 text-sm hover:bg-stone-800 transition-colors"
         >
-          + Add restaurant
+          + Add business
         </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat label="Restaurants" value={totalClients ?? 0} />
+        <Stat label="Businesses" value={totalClients ?? 0} />
         <Stat label="Reviews this week" value={weekReviews ?? 0} />
         <Stat label="Reviews all-time" value={totalReviews ?? 0} />
         <Stat
@@ -141,7 +141,7 @@ export default async function DashboardOverview({
         </div>
         {recentRows.length === 0 ? (
           <p className="mt-6 text-stone-500 text-sm">
-            No reviews yet. Add a restaurant and put the QR code on the table.
+            No reviews yet. Add a business and share the QR code with your customers.
           </p>
         ) : (
           <ul className="mt-4 divide-y divide-stone-100">
