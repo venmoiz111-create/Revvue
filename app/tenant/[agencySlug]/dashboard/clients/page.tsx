@@ -58,7 +58,7 @@ export default async function ClientsListPage({
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-serif text-3xl tracking-tight text-stone-900">
-            Restaurants
+            Businesses
           </h1>
           <p className="mt-2 text-stone-600">
             {clients?.length ?? 0} of{" "}
@@ -80,7 +80,7 @@ export default async function ClientsListPage({
             href="/dashboard/clients/new"
             className="rounded-full bg-stone-900 text-stone-50 font-medium px-5 py-2.5 text-sm hover:bg-stone-800 transition-colors"
           >
-            + Add restaurant
+            + Add business
           </Link>
         )}
       </div>
@@ -88,12 +88,12 @@ export default async function ClientsListPage({
       <div className="bg-white border border-stone-200 rounded-2xl shadow-sm overflow-hidden">
         {(clients?.length ?? 0) === 0 ? (
           <div className="p-10 text-center">
-            <p className="text-stone-600">No restaurants yet.</p>
+            <p className="text-stone-600">No businesses yet.</p>
             <Link
               href="/dashboard/clients/new"
               className="mt-4 inline-flex rounded-full bg-stone-900 text-stone-50 px-5 py-2.5 text-sm font-medium hover:bg-stone-800 transition-colors"
             >
-              Add your first restaurant
+              Add your first business
             </Link>
           </div>
         ) : (
@@ -101,7 +101,7 @@ export default async function ClientsListPage({
             <thead className="bg-stone-50 text-stone-500 uppercase text-[11px] tracking-widest">
               <tr>
                 <th className="text-left py-3 px-5">Business</th>
-                <th className="text-left py-3 px-5">Slug</th>
+                <th className="text-left py-3 px-5">Review URL</th>
                 <th className="text-right py-3 px-5">Reviews</th>
                 <th className="text-left py-3 px-5">Last review</th>
                 <th className="text-right py-3 px-5">Actions</th>
