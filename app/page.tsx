@@ -254,6 +254,12 @@ function NavBar() {
           For agencies
         </Link>
         <Link
+          href="/login"
+          className="text-stone-600 hover:text-stone-900 transition-colors"
+        >
+          Sign in
+        </Link>
+        <Link
           href="/signup"
           className="rounded-full bg-stone-900 text-stone-50 font-medium px-4 py-2 hover:bg-stone-800 transition-colors"
         >
