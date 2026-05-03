@@ -164,7 +164,7 @@ export default function NewClientForm({ agencySlug }: Props) {
         disabled={!formValid || submitting}
         className="w-full rounded-full bg-stone-900 text-stone-50 font-medium py-3 disabled:bg-stone-300 hover:bg-stone-800 transition-colors"
       >
-        {submitting ? "Creating…" : "Create restaurant"}
+        {submitting ? "Creating…" : "Create business"}
       </button>
     </form>
   );
