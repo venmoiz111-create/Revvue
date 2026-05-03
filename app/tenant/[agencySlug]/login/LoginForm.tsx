@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAgencyBranding } from "@/components/AgencyBrandingProvider";
 import { createSupabaseBrowser } from "@/lib/supabaseBrowser";
 
@@ -10,6 +10,13 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
+
+  // Pre-fill email if redirected from revvue.live/login
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pre = params.get("email");
+    if (pre) setEmail(pre);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
