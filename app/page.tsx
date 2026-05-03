@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Revvue — Voice-powered Google reviews for restaurants",
+  title: "Revvue — Voice-powered Google reviews for local businesses",
   description:
-    "Diners speak for 15 seconds. AI cleans it up. Your Google review count climbs. No app, no login, no typing.",
+    "Customers speak for 15 seconds. AI cleans it up. Your Google review count climbs. No app, no login, no typing.",
 };
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-1.5 text-xs text-stone-600 shadow-sm mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
-            Live at restaurants across Canada
+            Live at local businesses across Canada
           </div>
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-stone-900">
             Your customers won&apos;t type a review.
@@ -44,7 +44,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="mt-4 text-xs text-stone-500">
-            Works for restaurants and agencies. No credit card required.
+            Works for any local business. No credit card required.
           </p>
         </div>
       </section>
