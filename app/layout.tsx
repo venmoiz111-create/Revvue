@@ -13,7 +13,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#fafaf9",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased text-stone-900 bg-stone-50">{children}</body>
+      <body className="antialiased text-white bg-black">{children}</body>
     </html>
   );
 }
