@@ -390,7 +390,7 @@ function HoldButton({
   return (
     <button
       type="button"
-      onPointerDown={(e) => { e.preventDefault(); onPointerDown?.(); }}
+      onPointerDown={(e) => { e.preventDefault(); e.currentTarget.setPointerCapture(e.pointerId); onPointerDown?.(); }}
       onPointerUp={(e) => { e.preventDefault(); onPointerUp?.(); }}
       onPointerLeave={() => onPointerLeave?.()}
       onPointerCancel={() => onPointerCancel?.()}
