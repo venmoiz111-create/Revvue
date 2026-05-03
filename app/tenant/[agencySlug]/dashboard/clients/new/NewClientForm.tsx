@@ -20,13 +20,12 @@ type Props = {
   founderEmail: string;
 };
 
-export default function NewClientForm({ agencySlug, founderEmail }: Props) {
+export default function NewClientForm({ agencySlug }: Props) {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
+  const [showSlug, setShowSlug] = useState(false);
   const [reviewLink, setReviewLink] = useState("");
-  const [ownerEmail, setOwnerEmail] = useState("");
-  const [ownerPhone, setOwnerPhone] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -62,33 +61,37 @@ export default function NewClientForm({ agencySlug, founderEmail }: Props) {
           business_name: name.trim(),
           slug: slug.trim(),
           google_review_link: reviewLink.trim(),
-          owner_email: ownerEmail.trim() || null,
-          owner_phone: ownerPhone.trim() || null,
+          owner_email: null,
+          owner_phone: null,
         }),
       });
-      const data = (await res.json()) as {
-        client_id?: string;
-        error?: string;
-      };
+      const data = (await res.json()) as { client_id?: string; error?: string };
       if (!res.ok || !data.client_id) {
-        setError(data.error || "Could not create restaurant.");
+        setError(data.error || "Could not create restaurant. Try again.");
         setSubmitting(false);
         return;
       }
       window.location.href = `/dashboard/clients/${data.client_id}`;
-    } catch (err) {
-      console.error("create client failed", err);
+    } catch {
       setError("Network error. Try again.");
       setSubmitting(false);
     }
   }
+
+  const previewUrl = slug
+    ? `${agencySlug}.revvue.live/r/${slug}`
+    : `${agencySlug}.revvue.live/r/…`;
 
   return (
     <form
       onSubmit={handleSubmit}
       className="bg-white border border-stone-200 rounded-2xl shadow-sm p-6 space-y-5"
     >
-      <Field label="Business name" required>
+      {/* Business name */}
+      <div>
+        <label className="block text-sm font-medium text-stone-800 mb-2">
+          Business name <span className="text-stone-400 text-xs">*</span>
+        </label>
         <input
           type="text"
           required
@@ -96,43 +99,47 @@ export default function NewClientForm({ agencySlug, founderEmail }: Props) {
           onChange={(e) => setName(e.target.value)}
           className={inputClass}
           placeholder="Mario's Pizza"
+          autoFocus
         />
-      </Field>
+      </div>
 
-      <Field
-        label="Slug"
-        required
-        hint={
-          slugValid
-            ? `Review URL: ${agencySlug}.revvue.live/r/${slug}`
-            : "Lowercase letters, numbers, hyphens. 2–64 chars."
-        }
-      >
-        <div className="flex items-stretch rounded-xl border border-stone-300 focus-within:border-stone-900 transition-colors overflow-hidden">
-          <span className="bg-stone-50 border-r border-stone-200 px-3 py-3 text-stone-500 text-sm flex items-center font-mono">
-            /r/
-          </span>
-          <input
-            type="text"
-            required
-            value={slug}
-            onChange={(e) => {
-              setSlug(slugify(e.target.value));
-              setSlugTouched(true);
-            }}
-            className="flex-1 px-3 py-3 outline-none bg-transparent text-stone-900 font-mono text-sm"
-            placeholder="marios-pizza"
-          />
+      {/* Review URL preview — auto-generated, editable on demand */}
+      {slug && (
+        <div className="rounded-xl bg-stone-50 border border-stone-200 px-4 py-3">
+          <p className="text-xs text-stone-500 mb-1">Diner review page URL</p>
+          <p className="font-mono text-sm text-stone-900 break-all">{previewUrl}</p>
+          <button
+            type="button"
+            onClick={() => setShowSlug((v) => !v)}
+            className="mt-1 text-xs text-stone-400 underline underline-offset-4 hover:text-stone-700"
+          >
+            {showSlug ? "Hide" : "Customize URL"}
+          </button>
+          {showSlug && (
+            <div className="mt-3 flex items-stretch rounded-xl border border-stone-300 focus-within:border-stone-900 transition-colors overflow-hidden">
+              <span className="bg-stone-100 border-r border-stone-200 px-3 py-2.5 text-stone-500 text-xs flex items-center font-mono">
+                /r/
+              </span>
+              <input
+                type="text"
+                value={slug}
+                onChange={(e) => {
+                  setSlug(slugify(e.target.value));
+                  setSlugTouched(true);
+                }}
+                className="flex-1 px-3 py-2.5 outline-none bg-transparent text-stone-900 font-mono text-sm"
+                placeholder="marios-pizza"
+              />
+            </div>
+          )}
         </div>
-      </Field>
+      )}
 
-      <Field
-        label="Google review link"
-        required
-        hint={
-          'Paste the full "Write a review" URL from Google. We extract the place ID for the deep link.'
-        }
-      >
+      {/* Google review link */}
+      <div>
+        <label className="block text-sm font-medium text-stone-800 mb-2">
+          Google review link <span className="text-stone-400 text-xs">*</span>
+        </label>
         <input
           type="url"
           required
@@ -141,79 +148,25 @@ export default function NewClientForm({ agencySlug, founderEmail }: Props) {
           className={inputClass}
           placeholder="https://search.google.com/local/writereview?placeid=…"
         />
-      </Field>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Owner email" hint="Optional. For your records.">
-          <input
-            type="email"
-            value={ownerEmail}
-            onChange={(e) => setOwnerEmail(e.target.value)}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="Owner phone" hint="Optional.">
-          <input
-            type="tel"
-            value={ownerPhone}
-            onChange={(e) => setOwnerPhone(e.target.value)}
-            className={inputClass}
-          />
-        </Field>
+        <p className="mt-1 text-xs text-stone-500">
+          Go to Google Maps → find your business → click &ldquo;Write a review&rdquo; → copy that URL.
+        </p>
       </div>
 
       {error ? (
         <div className="rounded-xl border border-red-200 bg-red-50 text-red-800 text-sm p-3">
           {error}
-          {error.toLowerCase().includes("limit") ? (
-            <>
-              {" "}
-              <a
-                href={`mailto:${founderEmail}?subject=${encodeURIComponent(
-                  "Upgrade Revvue plan"
-                )}`}
-                className="underline underline-offset-4"
-              >
-                Email Ven to upgrade.
-              </a>
-            </>
-          ) : null}
         </div>
       ) : null}
 
       <button
         type="submit"
         disabled={!formValid || submitting}
-        className="w-full rounded-full bg-stone-900 text-stone-50 font-medium py-3 disabled:bg-stone-400 hover:bg-stone-800 transition-colors"
+        className="w-full rounded-full bg-stone-900 text-stone-50 font-medium py-3 disabled:bg-stone-300 hover:bg-stone-800 transition-colors"
       >
         {submitting ? "Creating…" : "Create restaurant"}
       </button>
     </form>
-  );
-}
-
-function Field({
-  label,
-  hint,
-  required,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="block">
-      <div className="text-sm font-medium text-stone-800 flex items-center gap-1">
-        {label}
-        {required ? (
-          <span className="text-stone-400 text-xs">*</span>
-        ) : null}
-      </div>
-      <div className="mt-2">{children}</div>
-      {hint ? <div className="mt-1 text-xs text-stone-500">{hint}</div> : null}
-    </label>
   );
 }
 
