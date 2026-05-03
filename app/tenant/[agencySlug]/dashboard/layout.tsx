@@ -77,7 +77,7 @@ export default async function DashboardLayout({ children, params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 flex">
+    <div className="min-h-screen bg-black flex">
       <DashboardSidebar />
       <div className="flex-1 flex flex-col">
         <TrialBanner
