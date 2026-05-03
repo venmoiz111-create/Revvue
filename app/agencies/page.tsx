@@ -5,7 +5,7 @@ import PricingCards from "@/components/PricingCards";
 export const metadata: Metadata = {
   title: "Revvue for Agencies — White-label voice reviews",
   description:
-    "Resell voice-powered Google reviews to your restaurant clients under your own brand, your own subdomain, your own dashboard.",
+    "Resell voice-powered Google reviews to your local business clients under your own brand, your own subdomain, your own dashboard.",
 };
 
 const FEATURES = [
@@ -17,12 +17,12 @@ const FEATURES = [
   {
     title: "Your subdomain",
     body:
-      "{youragency}.revvue.live out of the box. Custom domain support coming soon. Restaurants never see Revvue.",
+      "{youragency}.revvue.live out of the box. Custom domain support coming soon. Your clients never see Revvue.",
   },
   {
     title: "Your dashboard",
     body:
-      "Add restaurant clients, generate QR codes, see reviews land in real time. One log-in, all your accounts.",
+      "Add business clients, generate QR codes, see reviews land in real time. One log-in, all your accounts.",
   },
 ];
 
@@ -35,9 +35,9 @@ const STEPS = [
   },
   {
     n: "02",
-    title: "Add a restaurant",
+    title: "Add a business",
     body:
-      "Business name, slug, Google review link. Done. Print the QR code and put it on the table.",
+      "Business name, Google review link. Done. Print the QR code and put it at the counter or on the table.",
   },
   {
     n: "03",
@@ -47,7 +47,7 @@ const STEPS = [
   },
   {
     n: "04",
-    title: "You bill the restaurant",
+    title: "You bill the client",
     body:
       "Your agency, your contract, your price. Revvue runs the infra; you run the relationship.",
   },
@@ -55,7 +55,7 @@ const STEPS = [
 
 const FAQS = [
   {
-    q: "Do my restaurants ever see the Revvue brand?",
+    q: "Do my clients ever see the Revvue brand?",
     a:
       "No. Review pages are served from your subdomain with your branding. The only place Revvue is mentioned to a customer is a small \"Powered by\" footer, which is removable on Scale and Unlimited plans.",
   },
@@ -67,7 +67,7 @@ const FAQS = [
   {
     q: "What happens after the 14-day trial?",
     a:
-      "Your dashboard shows a friendly upgrade prompt. Review pages KEEP WORKING — your restaurant clients are not impacted. We give you time to settle billing on your terms.",
+      "Your dashboard shows a friendly upgrade prompt. Review pages KEEP WORKING — your clients are not impacted. We give you time to settle billing on your terms.",
   },
   {
     q: "Can I bring my own domain?",
