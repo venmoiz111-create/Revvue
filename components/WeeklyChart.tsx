@@ -25,16 +25,16 @@ export default function WeeklyChart({ days, avgStarRating }: Props) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-serif text-xl tracking-tight text-stone-900">
-          Reviews — last 7 days
+        <h2 className="text-base font-bold text-white tracking-tight">
+          Reviews last 7 days
         </h2>
         {avgStarRating !== null && (
           <div className="flex items-center gap-1.5">
-            <span className="text-amber-400 text-lg leading-none">★</span>
-            <span className="font-serif text-xl text-stone-900">
+            <span className="text-green-500 text-lg leading-none">★</span>
+            <span className="font-black text-xl text-white">
               {avgStarRating.toFixed(1)}
             </span>
-            <span className="text-xs text-stone-500">avg rating</span>
+            <span className="text-xs text-zinc-500">avg rating</span>
           </div>
         )}
       </div>
@@ -58,8 +58,8 @@ export default function WeeklyChart({ days, avgStarRating }: Props) {
                 width={barW}
                 height={barH || 2}
                 rx={4}
-                fill={isToday ? "#1c1917" : "#a8a29e"}
-                opacity={barH === 0 ? 0.3 : 1}
+                fill={isToday ? "#22c55e" : "#27272a"}
+                opacity={barH === 0 ? 0.4 : 1}
               />
               {day.count > 0 && (
                 <text
@@ -67,7 +67,7 @@ export default function WeeklyChart({ days, avgStarRating }: Props) {
                   y={y - 5}
                   textAnchor="middle"
                   fontSize={11}
-                  fill="#1c1917"
+                  fill={isToday ? "#22c55e" : "#71717a"}
                   fontWeight="600"
                 >
                   {day.count}
@@ -78,7 +78,7 @@ export default function WeeklyChart({ days, avgStarRating }: Props) {
                 y={H - 6}
                 textAnchor="middle"
                 fontSize={11}
-                fill={isToday ? "#1c1917" : "#78716c"}
+                fill={isToday ? "#22c55e" : "#52525b"}
                 fontWeight={isToday ? "600" : "400"}
               >
                 {day.label}
@@ -91,7 +91,7 @@ export default function WeeklyChart({ days, avgStarRating }: Props) {
           y1={TOP_PAD + chartH}
           x2={W}
           y2={TOP_PAD + chartH}
-          stroke="#e7e5e4"
+          stroke="#27272a"
           strokeWidth={1}
         />
       </svg>
