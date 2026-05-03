@@ -184,9 +184,12 @@ function Step1({
       className="space-y-5"
     >
       <h1 className="font-serif text-2xl tracking-tight">
-        Create your agency account
+        Create your account
       </h1>
-      <Field label="Work email">
+      <p className="text-sm text-stone-500 -mt-2">
+        Restaurant owner or marketing agency — same signup, same 14-day free trial.
+      </p>
+      <Field label="Email">
         <input
           type="email"
           required
@@ -212,21 +215,21 @@ function Step1({
           autoComplete="new-password"
         />
       </Field>
-      <Field label="Agency name">
+      <Field label="Restaurant or agency name">
         <input
           type="text"
           required
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
           className={inputClass}
-          placeholder="Northwind Reviews"
+          placeholder="Mario's Pizzeria  or  Northwind Reviews"
         />
       </Field>
       <Field
-        label="Subdomain"
+        label="Your review portal URL"
         hint={
           slugValid
-            ? `Your portal will live at ${form.slug}.revvue.live`
+            ? `Your review pages will live at ${form.slug}.revvue.live`
             : "3–32 lowercase letters, numbers, or hyphens."
         }
       >
