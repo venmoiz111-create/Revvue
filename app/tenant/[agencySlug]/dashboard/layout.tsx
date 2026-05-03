@@ -14,7 +14,7 @@ type Props = {
 };
 
 const FOUNDER_EMAIL =
-  process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "ven@revvue.live";
+  process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "team.revvue@gmail.com";
 
 export default async function DashboardLayout({ children, params }: Props) {
   const supa = createSupabaseServer();
