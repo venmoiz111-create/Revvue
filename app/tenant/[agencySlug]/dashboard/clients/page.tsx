@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 type Params = { agencySlug: string };
 
-const FOUNDER_EMAIL = process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "ven@revvue.live";
+const FOUNDER_EMAIL = process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "team.revvue@gmail.com";
 
 export default async function ClientsListPage({ params }: { params: Params }) {
   const ctx = await loadDashboardContext(params.agencySlug);
