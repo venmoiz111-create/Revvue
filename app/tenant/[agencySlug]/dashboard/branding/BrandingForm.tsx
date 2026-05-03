@@ -48,57 +48,49 @@ export default function BrandingForm({ initial }: Props) {
   }
 
   return (
-    <form
-      onSubmit={handleSave}
-      className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-    >
-      <div className="bg-white border border-stone-200 rounded-2xl shadow-sm p-6 space-y-5">
+    <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="border border-zinc-800 bg-zinc-950 rounded-2xl p-6 space-y-5">
         <Field label="Agency name">
           <input
             type="text"
             required
             value={form.name}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, name: e.target.value }))
-            }
+            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
             className={inputClass}
           />
         </Field>
+
         <Field
           label="Logo URL"
-          hint="Logo upload is coming soon — paste a URL for now (we recommend Imgur or Cloudinary)."
+          hint="Logo upload coming soon. Paste a URL for now (Imgur or Cloudinary work great)."
         >
           <input
             type="url"
             value={form.logo_url}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, logo_url: e.target.value }))
-            }
+            onChange={(e) => setForm((f) => ({ ...f, logo_url: e.target.value }))}
             className={inputClass}
             placeholder="https://i.imgur.com/yourlogo.png"
           />
         </Field>
+
         <Field label="Primary color">
           <div className="flex items-center gap-3">
             <input
               type="color"
               value={form.primary_color}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, primary_color: e.target.value }))
-              }
-              className="h-12 w-16 rounded-md border border-stone-300 cursor-pointer bg-white"
+              onChange={(e) => setForm((f) => ({ ...f, primary_color: e.target.value }))}
+              className="h-11 w-16 rounded-lg border border-zinc-700 cursor-pointer bg-zinc-900"
             />
             <input
               type="text"
               value={form.primary_color}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, primary_color: e.target.value }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, primary_color: e.target.value }))}
               className={inputClass}
               pattern="^#[0-9a-fA-F]{6}$"
             />
           </div>
         </Field>
+
         <Field label="Font">
           <div className="flex gap-3">
             {(["serif", "sans-serif"] as const).map((opt) => {
@@ -107,83 +99,78 @@ export default function BrandingForm({ initial }: Props) {
                 <button
                   key={opt}
                   type="button"
-                  onClick={() =>
-                    setForm((f) => ({ ...f, font_family: opt }))
-                  }
+                  onClick={() => setForm((f) => ({ ...f, font_family: opt }))}
                   className={[
                     "flex-1 rounded-xl border px-4 py-3 text-left transition-colors",
                     active
-                      ? "border-stone-900 bg-stone-900 text-stone-50"
-                      : "border-stone-300 bg-white hover:border-stone-500",
+                      ? "border-green-500 bg-green-500/10 text-white"
+                      : "border-zinc-700 bg-transparent text-zinc-400 hover:border-zinc-500",
                   ].join(" ")}
                   style={{ fontFamily: opt }}
                 >
-                  <div className="text-xs uppercase tracking-widest opacity-70">
+                  <div className="text-xs uppercase tracking-widest opacity-60">
                     {opt === "serif" ? "Serif" : "Sans"}
                   </div>
-                  <div className="text-base">Your business name</div>
+                  <div className="text-sm mt-0.5">Your business name</div>
                 </button>
               );
             })}
           </div>
         </Field>
 
-        {error ? (
-          <div className="rounded-xl border border-red-200 bg-red-50 text-red-800 text-sm p-3">
+        {error && (
+          <div className="rounded-xl border border-red-800 bg-red-950/40 text-red-400 text-sm p-3">
             {error}
           </div>
-        ) : null}
+        )}
 
         <div className="flex items-center gap-3">
           <button
             type="submit"
             disabled={saving}
-            className="rounded-full bg-stone-900 text-stone-50 font-medium px-5 py-2.5 text-sm hover:bg-stone-800 transition-colors disabled:opacity-50"
+            className="rounded-full bg-green-500 text-black font-bold px-5 py-2.5 text-sm hover:bg-green-400 transition-colors disabled:opacity-50"
           >
-            {saving ? "Saving…" : "Save changes"}
+            {saving ? "Saving..." : "Save changes"}
           </button>
-          {savedAt && Date.now() - savedAt < 4000 ? (
-            <span className="text-xs text-emerald-700">Saved.</span>
-          ) : null}
+          {savedAt && Date.now() - savedAt < 4000 && (
+            <span className="text-xs text-green-500">Saved.</span>
+          )}
         </div>
       </div>
 
       {/* Live preview */}
-      <div className="bg-stone-100 rounded-2xl p-6 border border-stone-200">
-        <div className="text-xs uppercase tracking-widest text-stone-500 mb-3">
+      <div className="border border-zinc-800 bg-zinc-950 rounded-2xl p-6">
+        <div className="text-xs uppercase tracking-widest text-zinc-600 font-semibold mb-4">
           Live preview
         </div>
-        <div className="rounded-2xl bg-gradient-to-b from-stone-50 to-stone-100 border border-stone-200 p-8 text-center">
+        <div
+          className="rounded-2xl p-8 text-center"
+          style={{ background: form.primary_color + "12", border: `1px solid ${form.primary_color}30` }}
+        >
           {form.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={form.logo_url}
-              alt={form.name}
-              className="h-10 w-auto mx-auto object-contain"
-            />
+            <img src={form.logo_url} alt={form.name} className="h-10 w-auto mx-auto object-contain" />
           ) : (
-            <p className="text-sm tracking-widest uppercase text-stone-500">
-              {form.name}
-            </p>
+            <p className="text-sm tracking-widest uppercase text-zinc-500">{form.name}</p>
           )}
           <h3
-            className="mt-2 text-3xl text-stone-900 tracking-tight"
+            className="mt-2 text-2xl text-white tracking-tight"
             style={{ fontFamily: form.font_family }}
           >
-            Mario&apos;s Pizza
+            {"Mario's Pizza"}
           </h3>
-          <p className="mt-3 text-stone-600 text-sm">
+          <p className="mt-2 text-zinc-500 text-sm">
             Tell us how your meal was. Hold the button and speak.
           </p>
           <button
             type="button"
             tabIndex={-1}
-            className="mt-5 inline-flex items-center justify-center rounded-full text-stone-50 px-6 py-3 text-sm cursor-default"
+            className="mt-5 inline-flex items-center justify-center rounded-full text-white px-6 py-3 text-sm cursor-default font-medium"
             style={{ backgroundColor: form.primary_color }}
           >
             Hold to speak
           </button>
-          <p className="mt-6 text-[11px] tracking-widest uppercase text-stone-400">
+          <p className="mt-5 text-[11px] tracking-widest uppercase text-zinc-700">
             Powered by {form.name}
           </p>
         </div>
@@ -192,23 +179,15 @@ export default function BrandingForm({ initial }: Props) {
   );
 }
 
-function Field({
-  label,
-  hint,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <div className="text-sm font-medium text-stone-800">{label}</div>
+      <div className="text-sm font-medium text-zinc-300">{label}</div>
       <div className="mt-2">{children}</div>
-      {hint ? <div className="mt-1 text-xs text-stone-500">{hint}</div> : null}
+      {hint && <div className="mt-1 text-xs text-zinc-600">{hint}</div>}
     </label>
   );
 }
 
 const inputClass =
-  "w-full rounded-xl border border-stone-300 px-3 py-3 outline-none focus:border-stone-900 transition-colors bg-white text-stone-900";
+  "w-full rounded-xl border border-zinc-700 px-3 py-3 outline-none focus:border-green-500 transition-colors bg-transparent text-white placeholder-zinc-600";
