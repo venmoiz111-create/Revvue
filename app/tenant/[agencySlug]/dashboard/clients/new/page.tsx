@@ -28,7 +28,7 @@ export default async function NewClientPage({
           ← Back to clients
         </Link>
         <h1 className="mt-2 font-serif text-3xl tracking-tight text-stone-900">
-          Add a restaurant
+          Add a business
         </h1>
         <p className="mt-2 text-stone-600">
           We&apos;ll generate a QR code and a review URL on{" "}
