@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const BASE_DOMAIN =
-  process.env.NEXT_PUBLIC_BASE_DOMAIN || "revvue.live";
+const BASE_DOMAIN = process.env.NEXT_PUBLIC_BASE_DOMAIN || "revvue.live";
 
 export default function LoginLookup() {
   const [email, setEmail] = useState("");
@@ -16,7 +15,6 @@ export default function LoginLookup() {
     if (submitting) return;
     setSubmitting(true);
     setError("");
-
     try {
       const res = await fetch("/api/login-lookup", {
         method: "POST",
@@ -24,14 +22,11 @@ export default function LoginLookup() {
         body: JSON.stringify({ email: email.trim() }),
       });
       const data = (await res.json()) as { slug?: string; error?: string };
-
       if (!res.ok || !data.slug) {
         setError(data.error || "Something went wrong. Try again.");
         setSubmitting(false);
         return;
       }
-
-      // Redirect to their portal login with email pre-filled.
       const loginUrl = `https://${data.slug}.${BASE_DOMAIN}/login?email=${encodeURIComponent(email.trim())}`;
       window.location.href = loginUrl;
     } catch {
@@ -41,27 +36,26 @@ export default function LoginLookup() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-50 flex items-center justify-center px-6 py-10">
+    <main className="min-h-screen bg-black flex items-center justify-center px-6 py-10">
       <div className="w-full max-w-md">
-        {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="font-serif text-2xl tracking-tight text-stone-900">
+          <Link href="/" className="text-2xl font-black tracking-tight text-white">
             Revvue
           </Link>
-          <h1 className="mt-4 font-serif text-3xl tracking-tight text-stone-900">
+          <h1 className="mt-4 text-3xl font-black tracking-tight text-white">
             Sign in
           </h1>
-          <p className="mt-2 text-sm text-stone-500">
-            Enter your email and we&apos;ll take you to your portal.
+          <p className="mt-2 text-sm text-zinc-500">
+            Enter your email and we will take you to your portal.
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-stone-200 rounded-2xl shadow-sm p-8 space-y-5"
+          className="border border-zinc-800 bg-zinc-950 rounded-2xl p-8 space-y-5"
         >
           <div>
-            <label className="block text-sm font-medium text-stone-800 mb-2">
+            <label className="block text-sm font-medium text-zinc-300 mb-2">
               Email
             </label>
             <input
@@ -71,13 +65,13 @@ export default function LoginLookup() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-stone-300 px-3 py-3 outline-none focus:border-stone-900 transition-colors bg-white text-stone-900"
+              className="w-full rounded-xl border border-zinc-700 px-3 py-3 outline-none focus:border-green-500 transition-colors bg-transparent text-white placeholder-zinc-600"
               placeholder="you@example.com"
             />
           </div>
 
           {error && (
-            <div className="rounded-xl border border-red-200 bg-red-50 text-red-800 text-sm p-3">
+            <div className="rounded-xl border border-red-800 bg-red-950/40 text-red-400 text-sm p-3">
               {error}
             </div>
           )}
@@ -85,17 +79,17 @@ export default function LoginLookup() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-full bg-stone-900 text-stone-50 font-medium py-3 disabled:bg-stone-400 hover:bg-stone-800 transition-colors"
+            className="w-full rounded-full bg-green-500 text-black font-bold py-3 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed hover:bg-green-400 transition-colors"
           >
-            {submitting ? "Finding your portal…" : "Continue →"}
+            {submitting ? "Finding your portal..." : "Continue →"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-stone-500">
-          Don&apos;t have an account?{" "}
+        <p className="mt-6 text-center text-sm text-zinc-600">
+          No account yet?{" "}
           <Link
             href="/signup"
-            className="underline underline-offset-4 hover:text-stone-800"
+            className="text-zinc-400 underline underline-offset-4 hover:text-white transition-colors"
           >
             Sign up free
           </Link>
