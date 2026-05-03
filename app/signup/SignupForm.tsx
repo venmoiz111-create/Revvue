@@ -54,8 +54,8 @@ export default function SignupForm() {
           name: form.name.trim(),
           slug: form.slug.trim(),
           logo_url: null,
-          primary_color: "#1c1917",
-          font_family: "serif",
+          primary_color: "#000000",
+          font_family: "sans-serif",
         }),
       });
       const data = (await res.json()) as {
@@ -80,17 +80,17 @@ export default function SignupForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white border border-stone-200 rounded-2xl shadow-sm p-8 space-y-5"
+      className="border border-zinc-800 bg-zinc-950 rounded-2xl p-8 space-y-5"
     >
       <div>
-        <h1 className="font-serif text-2xl tracking-tight">Create your account</h1>
-        <p className="mt-1 text-sm text-stone-500">
-          Restaurant or agency — 14-day free trial, no credit card.
+        <h1 className="text-2xl font-black tracking-tight text-white">Create your account</h1>
+        <p className="mt-1 text-sm text-zinc-500">
+          14-day free trial. No credit card required.
         </p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-800 mb-2">Email</label>
+        <label className="block text-sm font-medium text-zinc-300 mb-2">Email</label>
         <input
           type="email"
           required
@@ -103,7 +103,7 @@ export default function SignupForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-800 mb-2">Password</label>
+        <label className="block text-sm font-medium text-zinc-300 mb-2">Password</label>
         <input
           type="password"
           required
@@ -117,8 +117,8 @@ export default function SignupForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-800 mb-2">
-          Your business name
+        <label className="block text-sm font-medium text-zinc-300 mb-2">
+          Your business or agency name
         </label>
         <input
           type="text"
@@ -131,10 +131,10 @@ export default function SignupForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-800 mb-2">
+        <label className="block text-sm font-medium text-zinc-300 mb-2">
           Your review portal address
         </label>
-        <div className="flex items-stretch rounded-xl border border-stone-300 focus-within:border-stone-900 transition-colors overflow-hidden">
+        <div className="flex items-stretch rounded-xl border border-zinc-700 focus-within:border-green-500 transition-colors overflow-hidden">
           <input
             type="text"
             required
@@ -146,27 +146,27 @@ export default function SignupForm() {
                 slugTouched: true,
               }))
             }
-            className="flex-1 px-3 py-3 outline-none bg-transparent text-stone-900"
+            className="flex-1 px-3 py-3 outline-none bg-transparent text-white placeholder-zinc-600"
             placeholder="marios-pizzeria"
           />
-          <span className="bg-stone-50 border-l border-stone-200 px-3 py-3 text-stone-500 text-sm flex items-center whitespace-nowrap">
+          <span className="bg-zinc-900 border-l border-zinc-700 px-3 py-3 text-zinc-500 text-sm flex items-center whitespace-nowrap">
             .revvue.live
           </span>
         </div>
         {slugValid && form.slug ? (
-          <p className="mt-1 text-xs text-stone-500">
+          <p className="mt-1 text-xs text-zinc-500">
             Your review pages will live at{" "}
-            <span className="font-mono text-stone-700">{form.slug}.revvue.live</span>
+            <span className="font-mono text-green-500">{form.slug}.revvue.live</span>
           </p>
         ) : (
-          <p className="mt-1 text-xs text-stone-400">
-            3–32 lowercase letters, numbers, or hyphens.
+          <p className="mt-1 text-xs text-zinc-600">
+            3 to 32 lowercase letters, numbers, or hyphens.
           </p>
         )}
       </div>
 
       {serverError && (
-        <div className="rounded-xl border border-red-200 bg-red-50 text-red-800 text-sm p-3">
+        <div className="rounded-xl border border-red-800 bg-red-950/50 text-red-400 text-sm p-3">
           {serverError}
         </div>
       )}
@@ -174,17 +174,17 @@ export default function SignupForm() {
       <button
         type="submit"
         disabled={!formValid || submitting}
-        className="w-full rounded-full bg-stone-900 text-stone-50 font-medium py-3 disabled:bg-stone-300 disabled:cursor-not-allowed hover:bg-stone-800 transition-colors"
+        className="w-full rounded-full bg-green-500 text-black font-bold py-3 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed hover:bg-green-400 transition-colors"
       >
         {submitting ? "Creating your portal…" : "Create my portal →"}
       </button>
 
-      <p className="text-xs text-stone-400 text-center">
-        No credit card required. You can customise your branding from the dashboard.
+      <p className="text-xs text-zinc-600 text-center">
+        No credit card required. Customise your branding from the dashboard.
       </p>
     </form>
   );
 }
 
 const inputClass =
-  "w-full rounded-xl border border-stone-300 px-3 py-3 outline-none focus:border-stone-900 transition-colors bg-white text-stone-900";
+  "w-full rounded-xl border border-zinc-700 px-3 py-3 outline-none focus:border-green-500 transition-colors bg-transparent text-white placeholder-zinc-600";
