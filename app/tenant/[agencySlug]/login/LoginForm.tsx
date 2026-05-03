@@ -11,7 +11,6 @@ export default function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
 
-  // Pre-fill email if redirected from revvue.live/login
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const pre = params.get("email");
@@ -23,46 +22,34 @@ export default function LoginForm() {
     if (submitting) return;
     setSubmitting(true);
     setError("");
-
     try {
       const supabase = createSupabaseBrowser();
       const { error: signInErr } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
       });
-
       if (signInErr) {
-        // Map Supabase error codes to friendlier copy.
-        if (signInErr.message?.toLowerCase().includes("invalid")) {
-          setError("Wrong email or password.");
-        } else {
-          setError(signInErr.message || "Login failed.");
-        }
+        setError(
+          signInErr.message?.toLowerCase().includes("invalid")
+            ? "Wrong email or password."
+            : signInErr.message || "Login failed."
+        );
         setSubmitting(false);
         return;
       }
-
-      // Membership check: confirm this user actually belongs to this agency.
-      // Without this, a user with a valid Supabase account on a different
-      // agency could log in here and the dashboard would just bounce them.
-      // The dashboard layout enforces this server-side too; this is a
-      // friendlier UX-side check.
       const { data: membership } = await supabase
         .from("agency_users")
         .select("agency_id")
         .eq("agency_id", branding.agencyId)
         .maybeSingle();
-
       if (!membership) {
         await supabase.auth.signOut();
         setError(
-          `That account isn't a member of ${branding.agencyName}. Check the subdomain or contact your admin.`
+          `That account is not a member of ${branding.agencyName}. Check the subdomain or contact your admin.`
         );
         setSubmitting(false);
         return;
       }
-
-      // Hard navigation so the dashboard layout reads the new auth cookie.
       window.location.href = "/dashboard";
     } catch (err) {
       console.error("login failed:", err);
@@ -74,7 +61,7 @@ export default function LoginForm() {
   const { agencyName, logoUrl, primaryColor, fontFamily } = branding;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 flex items-center justify-center px-6 py-10">
+    <main className="min-h-screen bg-black flex items-center justify-center px-6 py-10">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           {logoUrl ? (
@@ -85,64 +72,74 @@ export default function LoginForm() {
               className="h-10 w-auto mx-auto object-contain"
             />
           ) : (
-            <p className="text-sm tracking-widest uppercase text-stone-500">
+            <p
+              className="text-sm tracking-widest uppercase text-zinc-500"
+              style={{ fontFamily }}
+            >
               {agencyName}
             </p>
           )}
           <h1
-            className="mt-3 text-3xl text-stone-900 tracking-tight"
+            className="mt-3 text-3xl font-black tracking-tight text-white"
             style={{ fontFamily }}
           >
             Sign in
           </h1>
+          <p className="mt-1 text-sm text-zinc-500">
+            to your {agencyName} dashboard
+          </p>
         </div>
+
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-stone-200 rounded-2xl shadow-sm p-8 space-y-5"
+          className="border border-zinc-800 bg-zinc-950 rounded-2xl p-8 space-y-5"
         >
           <label className="block">
-            <span className="text-sm font-medium text-stone-800">Email</span>
+            <span className="text-sm font-medium text-zinc-300">Email</span>
             <input
               type="email"
               required
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-stone-300 px-3 py-3 outline-none focus:border-stone-900 transition-colors bg-white text-stone-900"
+              className="mt-2 w-full rounded-xl border border-zinc-700 px-3 py-3 outline-none focus:border-green-500 transition-colors bg-transparent text-white placeholder-zinc-600"
+              placeholder="you@example.com"
             />
           </label>
+
           <label className="block">
-            <span className="text-sm font-medium text-stone-800">Password</span>
+            <span className="text-sm font-medium text-zinc-300">Password</span>
             <input
               type="password"
               required
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-stone-300 px-3 py-3 outline-none focus:border-stone-900 transition-colors bg-white text-stone-900"
+              className="mt-2 w-full rounded-xl border border-zinc-700 px-3 py-3 outline-none focus:border-green-500 transition-colors bg-transparent text-white"
             />
           </label>
-          {error ? (
-            <div className="rounded-xl border border-red-200 bg-red-50 text-red-800 text-sm p-3">
+
+          {error && (
+            <div className="rounded-xl border border-red-800 bg-red-950/40 text-red-400 text-sm p-3">
               {error}
             </div>
-          ) : null}
+          )}
+
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-full text-stone-50 font-medium py-3 disabled:opacity-60 transition-transform active:scale-[0.99]"
-            style={{ backgroundColor: primaryColor }}
+            className="w-full rounded-full font-bold py-3 text-white disabled:opacity-50 transition-colors"
+            style={{ backgroundColor: primaryColor || "#22c55e", color: primaryColor ? "white" : "black" }}
           >
-            {submitting ? "Signing in…" : "Sign in"}
+            {submitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
-        <p className="mt-6 text-center text-sm text-stone-500">
-          Don&apos;t have an account?{" "}
+
+        <p className="mt-6 text-center text-sm text-zinc-600">
+          No account?{" "}
           <a
-            href={`https://${
-              process.env.NEXT_PUBLIC_BASE_DOMAIN || "revvue.live"
-            }/signup`}
-            className="underline underline-offset-4 hover:text-stone-800"
+            href={`https://${process.env.NEXT_PUBLIC_BASE_DOMAIN || "revvue.live"}/signup`}
+            className="text-zinc-400 underline underline-offset-4 hover:text-white transition-colors"
           >
             Sign up at revvue.live
           </a>
