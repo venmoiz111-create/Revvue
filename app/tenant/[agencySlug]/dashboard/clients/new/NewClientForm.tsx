@@ -15,10 +15,7 @@ function slugify(input: string): string {
     .slice(0, 64);
 }
 
-type Props = {
-  agencySlug: string;
-  founderEmail: string;
-};
+type Props = { agencySlug: string; founderEmail: string };
 
 export default function NewClientForm({ agencySlug }: Props) {
   const [name, setName] = useState("");
@@ -52,7 +49,6 @@ export default function NewClientForm({ agencySlug }: Props) {
     if (!formValid || submitting) return;
     setSubmitting(true);
     setError("");
-
     try {
       const res = await fetch("/api/clients", {
         method: "POST",
@@ -67,7 +63,7 @@ export default function NewClientForm({ agencySlug }: Props) {
       });
       const data = (await res.json()) as { client_id?: string; error?: string };
       if (!res.ok || !data.client_id) {
-        setError(data.error || "Could not create restaurant. Try again.");
+        setError(data.error || "Could not create business. Try again.");
         setSubmitting(false);
         return;
       }
@@ -80,17 +76,16 @@ export default function NewClientForm({ agencySlug }: Props) {
 
   const previewUrl = slug
     ? `${agencySlug}.revvue.live/r/${slug}`
-    : `${agencySlug}.revvue.live/r/…`;
+    : `${agencySlug}.revvue.live/r/...`;
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white border border-stone-200 rounded-2xl shadow-sm p-6 space-y-5"
+      className="border border-zinc-800 bg-zinc-950 rounded-2xl p-6 space-y-5"
     >
-      {/* Business name */}
       <div>
-        <label className="block text-sm font-medium text-stone-800 mb-2">
-          Business name <span className="text-stone-400 text-xs">*</span>
+        <label className="block text-sm font-medium text-zinc-300 mb-2">
+          Business name
         </label>
         <input
           type="text"
@@ -103,21 +98,20 @@ export default function NewClientForm({ agencySlug }: Props) {
         />
       </div>
 
-      {/* Review URL preview — auto-generated, editable on demand */}
       {slug && (
-        <div className="rounded-xl bg-stone-50 border border-stone-200 px-4 py-3">
-          <p className="text-xs text-stone-500 mb-1">Diner review page URL</p>
-          <p className="font-mono text-sm text-stone-900 break-all">{previewUrl}</p>
+        <div className="rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3">
+          <p className="text-xs text-zinc-600 mb-1">Diner review page URL</p>
+          <p className="font-mono text-sm text-zinc-300 break-all">{previewUrl}</p>
           <button
             type="button"
             onClick={() => setShowSlug((v) => !v)}
-            className="mt-1 text-xs text-stone-400 underline underline-offset-4 hover:text-stone-700"
+            className="mt-1 text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
           >
             {showSlug ? "Hide" : "Customize URL"}
           </button>
           {showSlug && (
-            <div className="mt-3 flex items-stretch rounded-xl border border-stone-300 focus-within:border-stone-900 transition-colors overflow-hidden">
-              <span className="bg-stone-100 border-r border-stone-200 px-3 py-2.5 text-stone-500 text-xs flex items-center font-mono">
+            <div className="mt-3 flex items-stretch rounded-lg border border-zinc-700 focus-within:border-green-500 transition-colors overflow-hidden">
+              <span className="bg-zinc-800 border-r border-zinc-700 px-3 py-2.5 text-zinc-500 text-xs flex items-center font-mono">
                 /r/
               </span>
               <input
@@ -127,7 +121,7 @@ export default function NewClientForm({ agencySlug }: Props) {
                   setSlug(slugify(e.target.value));
                   setSlugTouched(true);
                 }}
-                className="flex-1 px-3 py-2.5 outline-none bg-transparent text-stone-900 font-mono text-sm"
+                className="flex-1 px-3 py-2.5 outline-none bg-transparent text-white font-mono text-sm"
                 placeholder="marios-pizza"
               />
             </div>
@@ -135,10 +129,9 @@ export default function NewClientForm({ agencySlug }: Props) {
         </div>
       )}
 
-      {/* Google review link */}
       <div>
-        <label className="block text-sm font-medium text-stone-800 mb-2">
-          Google review link <span className="text-stone-400 text-xs">*</span>
+        <label className="block text-sm font-medium text-zinc-300 mb-2">
+          Google review link
         </label>
         <input
           type="url"
@@ -146,29 +139,29 @@ export default function NewClientForm({ agencySlug }: Props) {
           value={reviewLink}
           onChange={(e) => setReviewLink(e.target.value)}
           className={inputClass}
-          placeholder="https://search.google.com/local/writereview?placeid=…"
+          placeholder="https://search.google.com/local/writereview?placeid=..."
         />
-        <p className="mt-1 text-xs text-stone-500">
-          Go to Google Maps → find your business → click &ldquo;Write a review&rdquo; → copy that URL.
+        <p className="mt-1 text-xs text-zinc-600">
+          Google Maps, find your business, click Write a review, copy that URL.
         </p>
       </div>
 
-      {error ? (
-        <div className="rounded-xl border border-red-200 bg-red-50 text-red-800 text-sm p-3">
+      {error && (
+        <div className="rounded-xl border border-red-800 bg-red-950/40 text-red-400 text-sm p-3">
           {error}
         </div>
-      ) : null}
+      )}
 
       <button
         type="submit"
         disabled={!formValid || submitting}
-        className="w-full rounded-full bg-stone-900 text-stone-50 font-medium py-3 disabled:bg-stone-300 hover:bg-stone-800 transition-colors"
+        className="w-full rounded-full bg-green-500 text-black font-bold py-3 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed hover:bg-green-400 transition-colors"
       >
-        {submitting ? "Creating…" : "Create business"}
+        {submitting ? "Creating..." : "Create business"}
       </button>
     </form>
   );
 }
 
 const inputClass =
-  "w-full rounded-xl border border-stone-300 px-3 py-3 outline-none focus:border-stone-900 transition-colors bg-white text-stone-900";
+  "w-full rounded-xl border border-zinc-700 px-3 py-3 outline-none focus:border-green-500 transition-colors bg-transparent text-white placeholder-zinc-600";
