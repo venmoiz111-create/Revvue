@@ -226,12 +226,12 @@ export default function Home() {
           <p className="mt-4 text-stone-600">
             Add Revvue to your tables today. No contracts, no setup fees.
           </p>
-          <a
-            href="mailto:ven@revvue.live?subject=Revvue%20—%20Get%20started"
+          <Link
+            href="/signup"
             className="mt-8 inline-flex items-center justify-center rounded-full bg-stone-900 text-stone-50 font-medium px-8 py-4 text-base shadow-sm hover:bg-stone-800 transition-colors"
           >
-            Get started — email ven@revvue.live
-          </a>
+            Start your free trial →
+          </Link>
         </div>
       </section>
 
@@ -253,12 +253,12 @@ function NavBar() {
         >
           For agencies
         </Link>
-        <a
-          href="mailto:ven@revvue.live?subject=Revvue%20—%20Get%20started"
+        <Link
+          href="/signup"
           className="rounded-full bg-stone-900 text-stone-50 font-medium px-4 py-2 hover:bg-stone-800 transition-colors"
         >
           Get started
-        </a>
+        </Link>
       </nav>
     </header>
   );
