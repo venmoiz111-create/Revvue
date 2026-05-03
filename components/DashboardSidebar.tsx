@@ -19,13 +19,12 @@ export default function DashboardSidebar() {
   async function handleLogout() {
     const supabase = createSupabaseBrowser();
     await supabase.auth.signOut();
-    // Hard navigate so the server picks up the cleared cookie.
     window.location.href = "/login";
   }
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-stone-200 min-h-screen sticky top-0">
-      <div className="p-6 border-b border-stone-200">
+    <aside className="hidden lg:flex flex-col w-60 bg-zinc-950 border-r border-zinc-800 min-h-screen sticky top-0">
+      <div className="p-5 border-b border-zinc-800">
         {branding.logoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -35,17 +34,18 @@ export default function DashboardSidebar() {
           />
         ) : (
           <p
-            className="text-base font-medium text-stone-900"
+            className="text-base font-black text-white tracking-tight"
             style={{ fontFamily: branding.fontFamily }}
           >
             {branding.agencyName}
           </p>
         )}
-        <p className="mt-1 text-xs text-stone-500">
+        <p className="mt-1 text-xs text-zinc-600 font-mono">
           {branding.agencySlug}.revvue.live
         </p>
       </div>
-      <nav className="p-4 flex-1 space-y-1">
+
+      <nav className="p-3 flex-1 space-y-0.5">
         {NAV.map((item) => {
           const active =
             item.href === "/dashboard"
@@ -56,10 +56,10 @@ export default function DashboardSidebar() {
               key={item.href}
               href={item.href}
               className={[
-                "block rounded-xl px-3 py-2 text-sm transition-colors",
+                "block rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 active
-                  ? "bg-stone-900 text-stone-50"
-                  : "text-stone-700 hover:bg-stone-100",
+                  ? "bg-green-500 text-black"
+                  : "text-zinc-400 hover:bg-zinc-900 hover:text-white",
               ].join(" ")}
             >
               {item.label}
@@ -67,11 +67,12 @@ export default function DashboardSidebar() {
           );
         })}
       </nav>
-      <div className="p-4 border-t border-stone-200">
+
+      <div className="p-3 border-t border-zinc-800">
         <button
           type="button"
           onClick={handleLogout}
-          className="w-full text-left rounded-xl px-3 py-2 text-sm text-stone-600 hover:bg-stone-100 transition-colors"
+          className="w-full text-left rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-900 hover:text-zinc-300 transition-colors"
         >
           Log out
         </button>
