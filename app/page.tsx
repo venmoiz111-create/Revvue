@@ -37,14 +37,14 @@ export default function Home() {
               Try it live — no signup →
             </Link>
             <Link
-              href="/agencies"
+              href="/signup"
               className="inline-flex items-center justify-center rounded-full border border-stone-300 text-stone-900 font-medium px-8 py-4 text-base hover:bg-stone-100 transition-colors"
             >
-              I&apos;m a marketing agency →
+              Get started free →
             </Link>
           </div>
           <p className="mt-4 text-xs text-stone-500">
-            No app download. No account. Works on any phone.
+            Works for restaurants and agencies. No credit card required.
           </p>
         </div>
       </section>
