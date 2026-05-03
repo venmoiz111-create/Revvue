@@ -52,7 +52,7 @@ const FAQS = [
   },
   {
     q: "How does billing work?",
-    a: "The 14-day trial is completely free. After that, we work out a plan together over email. No surprise charges, no credit card required upfront. Email ven@revvue.live when your trial ends.",
+    a: "The 14-day trial is completely free. After that, we work out a plan together over email. No surprise charges, no credit card required upfront. Email team.revvue@gmail.com when your trial ends.",
   },
   {
     q: "What happens after the 14-day trial?",
@@ -235,10 +235,10 @@ function Footer() {
       <p className="mt-2">
         Questions?{" "}
         <a
-          href={`mailto:${process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "ven@revvue.live"}`}
+          href={`mailto:${process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "team.revvue@gmail.com"}`}
           className="text-zinc-400 underline underline-offset-4 hover:text-white transition-colors"
         >
-          {process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "ven@revvue.live"}
+          {process.env.NEXT_PUBLIC_FOUNDER_EMAIL || "team.revvue@gmail.com"}
         </a>
       </p>
     </footer>
