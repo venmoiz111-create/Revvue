@@ -733,8 +733,11 @@ function HoldButton({
     <button
       type="button"
       onPointerDown={(e) => {
-        // Prevent context-menu on long press (Android) and text selection
+        // Prevent context-menu on long press (Android) and text selection.
+        // setPointerCapture keeps the element receiving events even when the
+        // pointer drifts off-button — fixes hold-to-speak on laptop/desktop.
         e.preventDefault();
+        e.currentTarget.setPointerCapture(e.pointerId);
         onPointerDown?.();
       }}
       onPointerUp={(e) => {
